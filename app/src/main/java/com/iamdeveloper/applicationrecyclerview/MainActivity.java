@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private RecyclerView recyclerView;
@@ -16,6 +17,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RecyclerView.LayoutManager layoutManager;
     private ImageView linear,grid,staggered;
     String[] data = {"สวัสดีครับ","เราเคยรู้จักกันหรือป่าว","หน้าตาคุ้นๆ","แต่ผมมองคุณยังไม่ค่อยชัด","เงยหน้าซักนิดให้ผมมิสิทได้รู้จัก","อยากมองยิ่งนัก","ซักวินาทีอยากเห็นหน้า"};
+    private int[] viewType = {0,1,0,1,0,0,0};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         onBindView();
         onClickThis();
         onBindRecyclerView();
+
     }
 
     void onBindView(){
@@ -36,7 +39,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-        adapter = new MyAdapter(data);
+        adapter = new MyAdapter(data,viewType , new OnItemClick() {
+            @Override
+            public void onItemClick(View v, int position) {
+                Toast.makeText(MainActivity.this,position+"",Toast.LENGTH_SHORT).show();
+            }
+        });
         recyclerView.setAdapter(adapter);
 
     }
